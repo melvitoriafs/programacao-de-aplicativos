@@ -1,4 +1,3 @@
-nome = input("Digite o seu nome: ")
 peso = int(input("Digite o seu peso: "))
 altura = float(input("Digite a sua altura: "))
 idade = int(input("Digite sua idade: "))

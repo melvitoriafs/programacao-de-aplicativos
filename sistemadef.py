@@ -1,15 +1,13 @@
-valor_base = int(input("digite um valor: "))
-imposto_percentual = int(input("digite outro valor: "))
-cupom_desconto = int(input("digite o último valor: "))
-
+valor_base = int(input("Digite o valor bruto do item: "))
+imposto_percentual = float(input("Digite o valor do imposto estadual: "))
+cupom_desconto = float(input("Digite a porcentagem do cupom de desconto: "))
 
 def calcular_preco_final(valor_base, imposto_percentual, cupom_desconto):
-    imposto = valor_base + imposto_percentual
-    cupom_total = imposto - cupom_desconto
-    if cupom_total > 0:
-    return cupom_total
+    valor_com_imposto = valor_base - imposto_percentual
+    valor_cupom = valor_com_imposto - cupom_desconto
+    if valor_cupom > valor_com_imposto:
+        return 0
 
-calcular_preco_final = (valor_base, imposto_percentual, cupom_desconto)
-print(f"o valor final é {cupom_total}")
-
+resultado = calcular_preco_final(valor_base, imposto_percentual, cupom_desconto)
+print(resultado)
 
