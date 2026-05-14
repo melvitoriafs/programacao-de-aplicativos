@@ -1,0 +1,11 @@
+andar
+correr
+nadar
+estudar
+andar
+correr
+ler
+estudar
+correr
+andar
+ler

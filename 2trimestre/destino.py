@@ -1,6 +1,5 @@
 def criar_arquivo():
     open('viagens.txt', 'w').close()
-criar_arquivo()
 
 def criar():
     lugar = input("Sugere algum lugar: ")
@@ -10,7 +9,7 @@ def criar():
 
 def ler():
     with open('viagens.txt', 'r')as f:
-        destino = f.readlines()
+        destinos = f.readlines()
 
         i = 0 
         for destino in destinos:
@@ -29,7 +28,7 @@ def atualizar():
 
     with open('viagens.txt', 'w')as f:
         f.writelines(linhas)
-    print("Lugares atualizados ")
+        print("Lugares atualizados ")
 
 def deletar():
     ler()
@@ -47,9 +46,9 @@ while True:
     print("\n3- Editar sugestão")
     print("\n4- Remover sugestão")
     print("\n5- Sair   ")
-    opcao = int(input("\nEscolha: "))
+    opcao = input("\nEscolha: ")
 
-    if opcao == '1': adicionar()
+    if opcao == '1': criar()
     elif opcao == '2': ler()
     elif opcao == '3': atualizar()
     elif opcao == '4': deletar()
