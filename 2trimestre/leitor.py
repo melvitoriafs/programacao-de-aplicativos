@@ -1,8 +1,17 @@
 import json
 
-with open("notas.json", "r", encoding="utf-8") as arquivo:
-    notas = json.load(arquivo)
+nome = input("Digite seu nome: ")
 
-soma = notas["matemática"] + notas["portugues"]
+aluno = {
+    "nome": nome,
+    "matemática": 9.5,
+    "português": 9.0,
+    "soma": 0
+}
 
-print("Soma das notas:", soma)
+soma_valor = aluno["matemática"] + aluno["português"]
+
+aluno ["soma"] = soma_valor
+
+with open("notas.json", 'a', encoding="utf-8") as arquivo: 
+    json.dump(aluno, arquivo, ensure_ascii=False)
