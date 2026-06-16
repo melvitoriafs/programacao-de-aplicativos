@@ -20,7 +20,7 @@ cpf_aluno = input("Digite seu CPF: ")
 
 comando_inserir = (f'''
                     INSERT INTO alunos (nome_aluno, telefone_aluno, turma_aluno, idade_aluno, cpf_aluno )
-                    VALUES ('({nome_aluno})', '{telefone_aluno}', '{turma_aluno}', '{idade_aluno}', '{cpf_aluno}')''')
+                    VALUES ('{nome_aluno})', '{telefone_aluno}', '{turma_aluno}', '{idade_aluno}', '{cpf_aluno}')''')
 
 cursor.execute(comando_inserir)
 conexao.commit()
