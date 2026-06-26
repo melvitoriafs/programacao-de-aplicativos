@@ -12,6 +12,7 @@ def criar():
                     turma TEXT,
                     idade INTEGER,
                     cpf TEXT UNIQUE NOT NULL,
+                    professor_id INTEGER,
                     FOREIGN KEY (professor_id) REFERENCES professor(id)
                     )''')
 
