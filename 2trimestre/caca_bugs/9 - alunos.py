@@ -6,4 +6,7 @@ def atualizar_nome_aluno(id_aluno, novo_nome):
 
     # O professor pediu para mudar o nome do aluno de ID 3,
     # Mas o sistema alterou o nome de TODOS os alunos do banco de dados! Correção urgente:
-    cursor.execute("UPDATE alunos SET nome = ?")
+    cursor.execute("UPDATE alunos SET nome = ?", (novo_nome,))
+
+    conexao.commit()
+    conexao.close()
