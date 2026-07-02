@@ -1,15 +1,16 @@
-import sqlite3
+import _sqlite3 
 
-def cadastrar_professor(nome, cpf):
-    conexao = sqlite3.connect('sistema_escola.db')
+def cadastrar_professor (nome, cpf):
+    conexao = _sqlite3.connect('sistema_escola.db')
     cursor = conexao.cursor()
 
-    # O sistema aceita cadastrar dois professores com o mesmo CPF.
-    # Como restringir isso direto na estrutura da tebela abaixo?
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS professores (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT,
-            cpf TEXT
-    )
-''')
+                   CREATE TABLE IF NOT EXISTS professores (
+                   id INTEGER PRIMARY KEY AUTOINCREMENT,
+                   nome TEXT,
+                   cpf UNIQUE TEXT
+                   )
+                   ''')
+    
+# O erro era por que o cpf não estava unique e ele so pode ser unico 
+# Então para não dar erro tem que colocar unique no cpf

@@ -12,4 +12,9 @@ def inicializar_banco():
     ''')
 
 # O banco não está salvando as alterações. Por quê?
-conexao.close()
+# Está faltando o conexão.commit() e tem que chamar a função
+    conexao.commit()
+    conexao.close()
+
+chamada = inicializar_banco()
+print(chamada)

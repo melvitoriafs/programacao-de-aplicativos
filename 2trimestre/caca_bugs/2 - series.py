@@ -6,6 +6,7 @@ def cadastrar_serie(nome_serie, id_escola):
     # O aluno tenta cadastrar uma série com id_escola = 999 (que não existe).
     # O SQLite aceita o cadastro mesmo assim. O que está faltando ativar?
     try:
+        cursor.execute("PRAGMA foreign_keys = ON;") # Faltava a verifição de chaves
         cursor.execute("INSERT INTO series (nome_serie, id_escola) VALUES (?, ?)", (nome_serie, id_escola))
         conexao.commit()
     except sqlite3.IntegrityError:
