@@ -10,4 +10,4 @@ def listar_alunos_e_turmas():
 
     for linha in cursor.fetchall():
         print(f"Aluno: {linha[0]} | Turma: {linha[1]}")
-    conxao.close()
+    conexao.close()

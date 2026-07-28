@@ -11,3 +11,4 @@ def cadastrar_escola_rapido():
     cursor.execute(f"INSERT INTO escolas (nome, endereco) VALUES ('{nome}', '{endereco}')")
     conexao.commit()
     conexao.close()
+    cancelado

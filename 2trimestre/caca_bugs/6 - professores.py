@@ -7,4 +7,6 @@ def buscar_professor(id_prof):
     resultado = cursor.fetchone()
     print(resultado)
     conexao.close
-# É obrigatorio colocar a virgula depois do elemento 
+# É obrigatorio colocar a virgula dps do elemento 
+
+
