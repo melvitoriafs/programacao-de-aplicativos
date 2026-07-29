@@ -1,14 +1,17 @@
 import sqlite3
 
-def verficar_registros():
+def verificar_registros():
     conexao = sqlite3.connect('sistema_escola.db')
     cursor = conexao.cursor()
 
     cursor.execute("SELECT * FROM alunos")
 
-    #PORQUE O SEGUNDO PRINT NÃO MOSTRA ABSOLUTAMENTE NADA NO CONSOLE?
-    print("Primeiro print:", cursor.fetchall())
-    print("Segundo print:", cursor.fetchall())
+    dados = cursor.fetchall()
+
+    print("Primeiro print:", dados)
+    print("Segundo print:", dados)
 
     conexao.close()
+
+#  O fetchall() só consegue pegar os dados uma vez, depois disso o cursor fica vazio.
 

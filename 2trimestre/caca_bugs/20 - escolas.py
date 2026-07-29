@@ -1,16 +1,32 @@
 import sqlite3
 
 def cadastrar_escola_manual():
-    # O aluno resolveu gerar o ID por conta própria
-    id_escola = int(input("Digite o ID para a nova escola: "))
-    nome = input("Nome da escola: ")
+    conexao = None
 
-    conexao = sqlite3.connect('sistema_escola.db')
-    cursor = conexao.cursor()
+    try:
+        id_escola = int(input("Digite o ID para a nova escola: "))
+        nome = input("Nome da escola: ")
 
-    # Se rodar duas vezes com o ID 1, o programa fecha abruptamente (Crash).
-    # Aplique a blindagem protetora necessária:
-    cursor.execute("INSERT INTO escolas (id, nome) VALUES (?, ?)",(id_escola, nome))
+        conexao = sqlite3.connect('sistema_escola.db')
+        cursor = conexao.cursor()
 
-    conexao.commit()
-    conexao.close()
+        cursor.execute(
+            "INSERT INTO escolas (id, nome) VALUES (?, ?)",
+            (id_escola, nome)
+        )
+
+        conexao.commit()
+        print("Escola cadastrada com sucesso!")
+
+    except sqlite3.IntegrityError:
+        print("Erro: Este ID de escola já está cadastrado!")
+
+    except sqlite3.Error as e:
+        print(f"Erro no banco de dados: {e}")
+
+    finally:
+        if conexao:
+            conexao.close()
+
+# não existe tratamento de erro para ID duplicado. Se inserir o mesmo ID novamente, gera sqlite3.IntegrityError e o programa fecha.
+

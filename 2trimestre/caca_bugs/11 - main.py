@@ -1,13 +1,20 @@
-import sqlite3 
+import sqlite3
 
-def listar_alunos_e_turmas():
-    conexao = conexao = sqlite3.connect('sistema_escola.db')
+def listar_alunos_e_turma():
+    conexao = sqlite3.connect('sistema_escola.db')
     cursor = conexao.cursor()
 
-    # O relatório roda, mas repete os dados erroneamente em formato de matriz cruzada
-    # porque falta definir a regra de colagem (vínculo). Conserte o comando SQL: 
-    cursor.execute("SELECT alunos.nome, turmas.nome_turma FROM alunos INNER JOIN turmas")
+    cursor.execute('''
+        SELECT alunos.nome, turmas.nome_turma
+        FROM alunos 
+        INNER JOIN turmas
+        ON alunos.id_turma = turmas.id
+    ''')
 
     for linha in cursor.fetchall():
         print(f"Aluno: {linha[0]} | Turma: {linha[1]}")
-    conexao.close()
+        conexao.close()
+
+# Faltava a condição ON para ligar alunos e turmas de forma correta. 
+
+

@@ -15,13 +15,13 @@ def criar_tabelas():
             CREATE TABLE IF NOT EXISTS series (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome_serie TEXT,
-                id_escola INTERGER,
+                id_escola INTEGER,
                 FOREIGN KEY (id_escola)REFERENCES escolas (id)
             )
         ''')
 
     conexao.commit()
     conexao.close()
-
-# estava dando erro porque estava puxando uma referencia de umna tabela que nao existe
+criar_tabelas
+# estava dando erro porque estava puxando uma referencia de uma tabela que não existe
 

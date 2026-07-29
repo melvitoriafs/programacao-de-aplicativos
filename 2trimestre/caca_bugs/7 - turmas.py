@@ -12,5 +12,5 @@ def cadastrar_turma(nome,id_serie,id_prof):
     finally:
         conexao.close()
 
-# pode dar erro por que não existe o id prof entao colocamos os try, except junto com o erro que ai aparece
+# pode dar erro por que não existe o id prof, colocamos os try, except junto com o erro que ai aparece
 # se acontecer o erro tanto o commit tanto o close não é executado
