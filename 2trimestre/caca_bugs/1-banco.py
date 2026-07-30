@@ -27,3 +27,5 @@ def inicializar_banco():
 
 
 inicializar_banco()
+# criar a tabela e salvar com conexao.commit() conexao.close()
+

@@ -1,16 +1,49 @@
-import sqlite3
+ import sqlite3
 
-def cadastrar_turma(nome,id_serie,id_prof):
+def criar_tabela_turmas():
     conexao = sqlite3.connect('sistema_escola.db')
     cursor = conexao.cursor()
-    cursor.execute("PRAGMA foreing_keys = ON;")
+
+    cursor.execute("PRAGMA foreign_keys = ON")
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS turmas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            id_serie INTEGER,
+            id_prof INTEGER,
+            FOREIGN KEY (id_serie) REFERENCES series(id),
+            FOREIGN KEY (id_prof) REFERENCES professores(id)
+        )
+    ''')
+
+    conexao.commit()
+    conexao.close()
+
+def cadastrar_turma(nome, id_serie, id_prof):
+    conexao = sqlite3.connect('sistema_escola.db')
+    cursor = conexao.cursor()
+
+    cursor.execute("PRAGMA foreign_keys = ON")
+
     try:
-        cursor.execute("INSERT INTO turmas (nome_turma,id_serie,id_professor) VALUES (?,?,?)"), (nome , id_serie , id_prof)
+        cursor.execute('''
+            INSERT INTO turmas (nome, id_serie, id_prof)
+            VALUES (?, ?, ?)
+        ''', (nome, id_serie, id_prof))
+
         conexao.commit()
+        print("Turma cadastrada com sucesso!")
+
     except sqlite3.IntegrityError:
-        ("Professor ou série não existe.")
+        print("Erro: professor ou série não existe.")
+
     finally:
         conexao.close()
+
+criar_tabela_turmas()
+
+cadastrar_turma("Turma A", 1, 1)
 
 # pode dar erro por que não existe o id prof, colocamos os try, except junto com o erro que ai aparece
 # se acontecer o erro tanto o commit tanto o close não é executado

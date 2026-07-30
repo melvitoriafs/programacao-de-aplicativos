@@ -7,14 +7,14 @@ def criar_tabelas():
     cursor.execute('''
             CREATE TABLE IF NOT EXISTS escolas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome TEXT
+                nome TEXT NOT NULL
             )
         ''')
     
     cursor.execute('''
             CREATE TABLE IF NOT EXISTS series (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome_serie TEXT,
+                nome_serie TEXT NOT NULL,
                 id_escola INTEGER,
                 FOREIGN KEY (id_escola)REFERENCES escolas (id)
             )
@@ -22,6 +22,7 @@ def criar_tabelas():
 
     conexao.commit()
     conexao.close()
-criar_tabelas
+    print("Tabela criado com sucesso!")
+criar_tabelas()
 # estava dando erro porque estava puxando uma referencia de uma tabela que não existe
 

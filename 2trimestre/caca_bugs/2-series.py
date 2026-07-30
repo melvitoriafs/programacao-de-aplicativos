@@ -3,6 +3,8 @@ import sqlite3
 def cadastrar_series(nome_serie, id_escola):
     conexao = sqlite3.connect('sistema_escola.db')
     cursor = conexao.cursor()
+
+    cursor.execute("PRAGMA foreign_keys = ON")
    
     try:
         cursor.execute(
@@ -21,3 +23,5 @@ def cadastrar_series(nome_serie, id_escola):
 
 
 cadastrar_series("2º Ano", 1)
+
+#não estava verificando as chaves diferentes, foi adicionado "cursor.execute("PRAGMA foreign_keys = ON")"
