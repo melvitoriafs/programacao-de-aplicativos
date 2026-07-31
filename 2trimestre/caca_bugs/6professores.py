@@ -29,5 +29,5 @@ def buscar_professor(id_prof):
 buscar_professor(1)   
 
 
-# É obrigatorio colocar a virgula dps do elemento id_prof
+# é obrigatorio colocar a virgula dps do elemento id_prof
 

@@ -10,4 +10,4 @@ def deletar_escola_antiga():
     conexao.commit()
     conexao.close()
 
-    # A variável id_escola foi usada de forma errada no comando DELETE.
+# a variável id_escola foi usada de forma errada no comando DELETE. Para excluir a escola colocada
