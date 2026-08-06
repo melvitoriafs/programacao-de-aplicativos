@@ -12,18 +12,25 @@ def cadastrar_hospitais():
             )
           ''')
     try:
-    nome_hospital = input("Digite o nome do hospital: ")
-    nome_cidade = input("Digite o nome da cidade: ")
+        nome_hospital = input("Digite o nome do hospital: ")
+        nome_cidade = input("Digite o nome da cidade: ")
 
-    comando_inserir = (f'''
-                        (INSERT TO hospitais (nome, cidade))
-                        VALUES ('{nome_hospital}', '{nome_cidade}')''')
+        comando_inserir = (f'''
+                            (INSERT INTO hospitais (nome, cidade))
+                            VALUES ('{nome_hospital}', '{nome_cidade}')''')
 
     except ValueError as erro:
         print("Digite apenas o nome!")
+
+    except sqlite3.IntegrityError as erro:
+        print("Erro! Informações cadastradas")
+        
+    finally:
+        conexao.commit()
+        print("Hospital cadastrado!")
      
-    print("Hospital cadastrado!")
-    conexao.commit() 
+        conexao.close()
+    
     
 def cadastrar_medicos():
     conexao = sqlite3.connect('sistema_hospital.db')
@@ -40,21 +47,28 @@ def cadastrar_medicos():
                 )
                 ''')
     try:
-        nome_medico = input("Digite o nome dos hospitais: ")
+        nome_medico = input("Digite o nome do médico: ")
         crm_medico = int(input("Digite o crm: "))
         id_hospital = int(input("Digite o id: "))
 
         comando_inserir = (f'''
-                            (INSERT TO hospitais (nome, crm, id_hospital))
+                            (INSERT INTO hospitais (nome, crm, id_hospital))
                             VALUES ('{nome_medico}', '{crm_medico}', '{id_hospital}')''')
         print("Médico cadastrado! ")
         conexao.commit
+        
 
     except ValueError as erro:
         print("Digite apenas os números!")
 
     except sqlite3.IntegrityError as erro:
         print("Erro! Informações cadastradas")
+
+    finally:
+        conexao.close()
+cadastrar_hospitais()
+cadastrar_medicos()
+
 
 
 
