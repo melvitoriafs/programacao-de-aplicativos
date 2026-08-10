@@ -54,7 +54,18 @@ def cadastrar_salas():
                         (INSERT TO cinemas(numero_sala, capacidade, id_cinema))
                         VALUES ('{nome_cinema}', '{capacidade}',{id_cinema})''')
 
-luis é lindo e todos sabem, porem ninguem confia em um ex mentiroso!!!!!!! sou de familia e nao faço nada 
-de interessante na minha vida, porem eu tenho muito a oferecer
-sou desse jeito rustico mas sou apaixonado
-espero que todos que leiam essa mensagem, arrumem uma namorada para mim!!!!!!!!!!!
+    except ValueError as erro:
+        print("Digite apenas números!")
+    
+    except sqlite3.IntegrityError as erro:
+        print("Erro! Informações cadastradas")
+    
+    finally:
+        conexao.close()
+
+def listar_tabelas()
+    cursor.execute("SELECT * FROM cinemas") 
+    cinemas = cursor.fetchall()
+
+
+
