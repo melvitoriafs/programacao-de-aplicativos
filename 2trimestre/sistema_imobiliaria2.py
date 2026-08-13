@@ -178,7 +178,7 @@ def alterar_tabelas():
 
 def excluir():
     try:
-        conexao = sqlite3.connect("sistema_imobiliaria.db")
+        conexao = sqlite3.connect("sistema_imobiliariaa.db")
         cursor = conexao.cursor()
 
         listar_tabelas()
