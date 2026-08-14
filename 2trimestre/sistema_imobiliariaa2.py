@@ -1,9 +1,10 @@
 import sqlite3
 
-
 def criar_tabelas():
     conexao = sqlite3.connect('sistema_imobiliariaa.db')
     cursor = conexao.cursor()
+    cursor.execute("PRAGMA foreign_keys = ON")
+   
 
     try:
         cursor.execute('''
@@ -39,7 +40,7 @@ criar_tabelas()
 def cadastrar_construturas():
     conexao = sqlite3.connect('sistema_imobiliariaa.db')
     cursor = conexao.cursor()
-
+   
     try:
         razao_social = input("Digite a razão social (nome) da construtora: ")
         creci_juridico = int(input("Digite o CRECI jurídico apenas com números: "))
@@ -66,7 +67,7 @@ def cadastrar_construturas():
 def cadastrar_imobiliarias():
     conexao = sqlite3.connect('sistema_imobiliariaa.db')
     cursor = conexao.cursor()
-
+    
     try:
         bairro = input("Digite o bairro: ")
         id_construtora = int(input("Digite o ID da construtora: "))
@@ -93,7 +94,7 @@ def cadastrar_imobiliarias():
 def listar_tabelas():
     conexao = sqlite3.connect('sistema_imobiliariaa.db')
     cursor = conexao.cursor()
-
+   
     try:
 
         cursor.execute("SELECT * FROM construtoras")
@@ -180,6 +181,7 @@ def excluir():
     try:
         conexao = sqlite3.connect("sistema_imobiliariaa.db")
         cursor = conexao.cursor()
+    
 
         listar_tabelas()
 
