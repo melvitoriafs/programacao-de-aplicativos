@@ -117,96 +117,83 @@ def listar_tabelas():
     finally:
         conexao.close()
 
-def alterar_tabelas():
+def alterar_tabelas(nova_razao_social=None, novo_creci=None, novo_bairro=None, novo_id_construtora=None):
     conexao = sqlite3.connect('sistema_imobiliariaa.db')
     cursor = conexao.cursor()
 
     try:
-        id_construtora = int(input("Qual é o ID da construtora: "))
-
-        cursor.execute(f'''SELECT * FROM construtoras WHERE id = {id_construtora}''')
-        construtora = cursor.fetchone()
-
-        if not construtora:
-            print("Não encontrado!")
-        else:
-            nova_razao_social = input("Qual a nova razão social: ")
-            novo_creci = int(input("Qual o novo CRECI jurídico: "))
-
-            comando = f'''
-                UPDATE construtoras 
-                SET razao_social = '{nova_razao_social}',
-                creci_juridico = {novo_creci}
-                WHERE id = {id_construtora}'''
-
-            cursor.execute(comando)
+        if nova_razao_social is not None:
+            cursor.execute("SELECT id FROM construtoras ORDER BY id DESC LIMIT 1")
+            id_c = cursor.fetchone()[0]
+            cursor.execute(f"UPDATE construtoras SET razao_social = '{nova_razao_social}', creci_juridico = {novo_creci} WHERE id = {id_c}")
+            
+            cursor.execute("SELECT id FROM imobiliarias ORDER BY id DESC LIMIT 1")
+            id_i = cursor.fetchone()[0]
+            cursor.execute(f"UPDATE imobiliarias SET bairro = '{novo_bairro}', id_construtora = {novo_id_construtora} WHERE id = {id_i}")
+            
             conexao.commit()
+            return "Tabelas alteradas!"
 
-            return "Construtora alterada!"
+       
+        id_construtora = int(input("Qual é o ID da construtora: "))
+        cursor.execute(f"SELECT * FROM construtoras WHERE id = {id_construtora}")
+        if not cursor.fetchone():
+            print("Construtora não encontrada!")
+            return
+            
+        nova_razao_social = input("Qual a nova razão social: ")
+        novo_creci = int(input("Qual o novo CRECI jurídico: "))
+        cursor.execute(f"UPDATE construtoras SET razao_social = '{nova_razao_social}', creci_juridico = {novo_creci} WHERE id = {id_construtora}")
 
         id_imobiliaria = int(input("Qual é o ID da imobiliária: "))
+        cursor.execute(f"SELECT * FROM imobiliarias WHERE id = {id_imobiliaria}")
+        if not cursor.fetchone():
+            print("Imobiliária não encontrada!")
+            return
 
-        cursor.execute(f'''SELECT * FROM imobiliarias WHERE id = {id_imobiliaria}''')
-        imobiliaria = cursor.fetchone()
-
-        if not imobiliaria:
-            print("Não encontrado!")
-        else:
-            novo_bairro = input("Qual o novo bairro: ")
-            novo_id_construtora = int(input("Qual o novo ID da construtora: "))
-
-            comando = f'''
-                UPDATE imobiliarias
-                SET bairro = '{novo_bairro}',
-                id_construtora = {novo_id_construtora}
-                WHERE id = {id_imobiliaria} '''
-
-            cursor.execute(comando)
-            conexao.commit()
-
-            return "Imobiliária alterada!"
+        novo_bairro = input("Qual o novo bairro: ")
+        novo_id_construtora = int(input("Qual o novo ID da construtora: "))
+        cursor.execute(f"UPDATE imobiliarias SET bairro = '{novo_bairro}', id_construtora = {novo_id_construtora} WHERE id = {id_imobiliaria}")
+        
+        conexao.commit()
+        return "Tabelas alteradas!"
 
     except ValueError:
         print("Digite os números corretamente!")
-
     except sqlite3.Error as erro:
         print("Erro:", erro)
-
     finally:
         conexao.close()
 
-def excluir():
+
+def excluir(id_construtora=None, id_imobiliaria=None):
     try:
         conexao = sqlite3.connect("sistema_imobiliariaa.db")
         cursor = conexao.cursor()
-    
+        cursor.execute("PRAGMA foreign_keys = ON")
 
-        listar_tabelas()
+        if id_construtora is None:
+            listar_tabelas()
+            id_imobiliaria = int(input("Qual ID da imobiliária deseja deletar primeiro: "))
+            cursor.execute(f"DELETE FROM imobiliarias WHERE id = {id_imobiliaria}")
+            
+            id_construtora = int(input("Qual ID da construtora deseja deletar agora: "))
+            cursor.execute(f"DELETE FROM construtoras WHERE id = {id_construtora}")
+        
+        else:
+            cursor.execute(f"DELETE FROM imobiliarias WHERE id = {id_imobiliaria}")
+            cursor.execute(f"DELETE FROM construtoras WHERE id = {id_construtora}")
 
-        id_construtora = int(input("Qual ID da construtora deseja deletar: "))
-
-        cursor.execute(f'''
-            DELETE FROM construtoras
-            WHERE id = {id_construtora} ''')
         conexao.commit()
         return "Construtora excluída!"
 
-        id_imobiliaria = int(input("Qual ID da imobiliária deseja deletar: "))
-
-        cursor.execute(f'''
-            DELETE FROM imobiliarias
-            WHERE id = {id_imobiliaria}''')
-        conexao.commit()
-        return "Imobiliária excluída!"
-
     except ValueError:
         print("Digite apenas números!")
-
     except sqlite3.Error as erro:
         print("Erro:", erro)
-
     finally:
         conexao.close()
+ 
 
 def menu():
     try:
@@ -253,7 +240,7 @@ def menu():
 assert cadastrar_construturas ("blue", 123) ==  "Construtora cadastrada!"
 assert cadastrar_imobiliarias ("jardim mga", 2) == "Imobiliária cadastrada!"
 assert listar_tabelas () == "Dados listados"
-assert alterar_tabelas ("green", 1234, "jardim mg", 2) == "Construtora alterada!", "Imobiliária alterada!"
+assert alterar_tabelas ("green", 1234, "jardim mg", 2) == "Tabelas alteradas!"
 assert excluir (3, 4) == "Construtora excluída!" , "Imobiliária excluída!"
 
 
