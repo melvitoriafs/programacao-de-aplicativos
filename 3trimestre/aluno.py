@@ -4,15 +4,15 @@ conexao = sqlite3.connect('gestao_escolar.db')
 cursor = conexao.cursor()
 
 
-def cadastrar_escolas():
+def cadastrar_alunos():
     try:
         conexao = sqlite3.connect('gestao_escolar.db')
         cursor = conexao.cursor()
-        nome_escola = input("Insira o nome da escola: ")
-        cidade = input("Informe o nome da cidade: ")
-        comando_inserir = f'''
-                        INSERT INTO escolas (nome, cidade)
-                        VALUES ('{nome_escola}', '{cidade}') '''
+        nome_aluno = input("Insira o nome do aluno: ")
+        idade_aluno = input("Informe a idade do aluno: ")
+        comando_inserir = "INSERT INTO alunos (nome, idade) VALUES (?, ?)"
+
+        cursor.execute(comando_inserir, (nome_aluno, idade_aluno))
         conexao.commit()
         print("Cadastro concluido!")
 
@@ -26,22 +26,24 @@ def cadastrar_escolas():
             conexao.close()
 
 
-def listar_escolas():
+def listar_alunos():
     try:
         conexao = sqlite3.connect('gestao_escolar.db')
         cursor = conexao.cursor()
-        cursor.execute("SELECT * FROM escolas")
+        cursor.execute("SELECT * FROM alunos")
 
-        info_escolas = cursor.fetchall()
+        info_alunos = cursor.fetchall()
 
-        if not info_redes:
+
+        if not info_alunos:
             print("Nenhuma informação encontrada!")
 
         else:
-            for inf in info_redes:
+            for inf in info_alunos:
                 print(f"ID: {inf[0]}")
                 print(f"Nome: {inf[1]}")
-                print(f"Cidade: {inf[2]}")
+                print(f"Idade: {inf[2]}")
+                print(f"ID turma: {inf[3]}")
 
 
 
@@ -49,15 +51,15 @@ def listar_escolas():
         print("Erro do sqlite: ", e)
 
 
-def atualizar_escolas():
+def atualizar_alunos():
     conexao = sqlite3.connect('gestao_escolar.db')
     cursor = conexao.cursor()
-    listar_escolas()
+    listar_alunos()
 
     try:
-        id_escola = int(input("Insira o id da escola que deseja alterar: "))
-        nova_escola = input("Informe o nome novo: ")
-        cursor.execute("UPDATE escolas SET nova_escola = ? WHERE id = ?", (nova_escola))
+        id_aluno = int(input("Insira o id do aluno que deseja alterar: "))
+        novo_aluno = input("Informe o nome novo: ")
+        cursor.execute("UPDATE alunos SET novo_aluno = ? WHERE id = ?", (novo_aluno))
 
         conexao.commit()
         print("Nome atualizado com sucesso!")
@@ -66,18 +68,18 @@ def atualizar_escolas():
         print("Não foi possivel atualizar!", e)
 
 
-def excluir_redes():
+def excluir_alunos():
     conexao = sqlite3.connect('gestao_escolar.db')
     cursor = conexao.cursor()
-    listar_escolas()
+    listar_alunos()
 
     try:
-        id_escolas = int(input("Informe o id da escola que deseja excluir: "))
-        cursor.execute("DELETE FROM escolas WHERE id = ?", (id_escolas,))
+        id_alunos = int(input("Informe o id do aluno que deseja excluir: "))
+        cursor.execute("DELETE FROM alunos WHERE id = ?", (id_alunos,))
 
 
         conexao.commit()
-        print("Escola deletada com sucesso!")
+        print("Aluno deletado com sucesso!")
 
     except sqlite3.Error as e:
-            print("Erro: Escola não deletada.", e)
+            print("Erro: Aluno não deletado.", e)
