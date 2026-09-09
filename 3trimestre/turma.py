@@ -1,95 +1,134 @@
 
 import sqlite3
-conexao = None
-conexao = sqlite3.connect('gestao_escolar.db')
-cursor = conexao.cursor()
 
 
 def cadastrar_turmas():
+    conexao = sqlite3.connect("gestao_escolar.db")
+    cursor = conexao.cursor()
+
     try:
-        conexao = sqlite3.connect('gestao_escolar.db')
-        cursor = conexao.cursor()
-        nome_turma = input("Insira a turma: ")
-        id_escola = int(input("Informe o id da escola que deseja cadastrar: "))
-        comando_inserir = "INSERT INTO turmas (nome_turma, id_escola) VALUES (?, ?)"
+        nome_turma = input("Insira o nome da turma: ")
+        id_escola = int(input("Informe o ID da escola: "))
 
-        cursor.execute(comando_inserir, (nome_turma, id_escola))
+        cursor.execute(
+            """
+            INSERT INTO turmas (nome_turma, id_escola)
+            VALUES (?, ?)
+            """,
+            (nome_turma, id_escola)
+        )
+
         conexao.commit()
-        print("Cadastro concluido!")
+        print("Turma cadastrada com sucesso!")
 
-    except ValueError as e:
-        print("Digite apenas nomes! ", e)
-    except sqlite3.IntegrityError as e:
-        print("Erro! Informações já cadastradas! ", e)
+    except ValueError:
+        print("O ID da escola deve ser um número.")
+
+    except sqlite3.IntegrityError:
+        print("A escola informada não existe.")
+
+    except sqlite3.Error as e:
+        print("Erro ao cadastrar turma:", e)
 
     finally:
-        if conexao:
-            conexao.commit() 
-            conexao.close()
+        conexao.close()
 
 
 def listar_turmas():
+    conexao = sqlite3.connect("gestao_escolar.db")
+    cursor = conexao.cursor()
+
     try:
-        conexao = sqlite3.connect('gestao_escolar.db')
-        cursor = conexao.cursor()
         cursor.execute("SELECT * FROM turmas")
+        turmas = cursor.fetchall()
 
-        info_turmas = cursor.fetchall()
+        print("\n===== TURMAS =====")
 
-        print(">>> TURMAS CADASTRADASTRADAS <<<")
-
-        if not info_turmas:
-            print("Nenhuma informação encontrada!")
-
+        if not turmas:
+            print("Nenhuma turma cadastrada.")
         else:
-            for inf in info_turmas:
-                print(f"ID: {inf[0]}")
-                print(f"Turma: {inf[1]}")
-                print(f"ID escola: {inf[2]}")
- 
-
+            for turma in turmas:
+                print(f"ID: {turma[0]}")
+                print(f"Turma: {turma[1]}")
+                print(f"ID da escola: {turma[2]}")
+                print("-------------------")
 
     except sqlite3.Error as e:
-        print("Erro do sqlite: ", e)
+        print("Erro ao listar turmas:", e)
+
+    finally:
+        conexao.close()
 
 
 def atualizar_turmas():
-    conexao = sqlite3.connect('gestao_escolar.db')
-    cursor = conexao.cursor()
     listar_turmas()
 
+    conexao = sqlite3.connect("gestao_escolar.db")
+    cursor = conexao.cursor()
+
     try:
-        id_turmas = int(input("Insira o id da turma que deseja alterar: "))
-        nova_turma = input("Informe a turma nova: ")
-        cursor.execute("UPDATE turmas SET nova_turma = ? WHERE id = ?", (id_turmas))
+        id_turma = int(input("Digite o ID da turma: "))
+        novo_nome = input("Digite o novo nome da turma: ")
+        nova_escola = int(input("Digite o novo ID da escola: "))
+
+        cursor.execute(
+            """
+            UPDATE turmas
+            SET nome_turma = ?, id_escola = ?
+            WHERE id = ?
+            """,
+            (novo_nome, nova_escola, id_turma)
+        )
 
         conexao.commit()
-        print("Turma atualizada com sucesso!")
+
+        if cursor.rowcount == 0:
+            print("Turma não encontrada.")
+        else:
+            print("Turma atualizada com sucesso!")
+
+    except ValueError:
+        print("Os IDs devem ser números.")
+
+    except sqlite3.IntegrityError:
+        print("A escola informada não existe.")
 
     except sqlite3.Error as e:
-        print("Não foi possivel atualizar!", e)
+        print("Erro ao atualizar turma:", e)
+
+    finally:
+        conexao.close()
 
 
 def excluir_turmas():
-    conexao = sqlite3.connect('gestao_escolar.db')
-    cursor = conexao.cursor()
     listar_turmas()
 
-    try:
-        id_turmas = int(input("Informe o id da turma que deseja excluir: "))
-        cursor.execute("DELETE FROM turmas WHERE id = ?", (id_turmas,))
+    conexao = sqlite3.connect("gestao_escolar.db")
+    cursor = conexao.cursor()
 
+    try:
+        id_turma = int(input("Digite o ID da turma: "))
+
+        cursor.execute(
+            "DELETE FROM turmas WHERE id = ?",
+            (id_turma,)
+        )
 
         conexao.commit()
-        print("Turma deletada com sucesso!")
+
+        if cursor.rowcount == 0:
+            print("Turma não encontrada.")
+        else:
+            print("Turma excluída com sucesso!")
+
+    except ValueError:
+        print("O ID deve ser um número.")
+
+    except sqlite3.IntegrityError:
+        print("Não é possível excluir esta turma porque ela possui alunos.")
 
     except sqlite3.Error as e:
-            print("Erro: Turma não deletada.", e)
+        print("Erro ao excluir turma:", e)
 
-
-
-
-
-
-
-
+    finally:
+        conexao.close()
